@@ -18,8 +18,8 @@ public class RLE {
     public char sr;
 
     public int index;
-    public String outEncoding;
-    public String outDecoding;
+    private String outEncoding;
+    private String outDecoding;
 
     public RLE(String s) {
         this.str = new StringBuilder(s);
@@ -31,7 +31,7 @@ public class RLE {
         this.outEncoding = "";
     }
 
-    public void encode() {
+    public String encode() {
 
         while (index < str.length()) {
 
@@ -44,6 +44,8 @@ public class RLE {
             }
 
         }
+        
+        return this.outEncoding;
     }
 
     public boolean beginRun() {
@@ -152,53 +154,43 @@ public class RLE {
         return "n" + lenght + word;
     }
 
-    public void decode() {
+    public String decode() {
 
         int i = 0;
-
         char controSymbol = readNextSymbol(i);
 
         String result = "";
         
         System.out.println(this.outEncoding);
-//
         while (i < this.outEncoding.length()) {
-//
             char nextSymbol = '\u0000';
             if (controSymbol == 'r') {
-//
                 nextSymbol = readNextSymbol(i + 2);
                 
-                System.out.println("next "+nextSymbol+" i="+Integer.parseInt(readNextSymbol(i + 1)+""));
-
                 if (isControlSymbol(nextSymbol)) {
                     result += output(Integer.parseInt(readNextSymbol(i + 1)+""), ' ');
-                    System.out.print("="+result);
                     i += 2;
                 } else {
-                    System.out.println("ii ="+i);
                     result += output(Integer.parseInt(readNextSymbol(i + 1)+""), nextSymbol);
                     i += 2;
                 }
             } else {
-//                result += outputNonRun(Integer.parseInt(controSymbol.charAt(1) + ""), i+2);
-//                i += 1+ Integer.parseInt(controSymbol.charAt(1) + "");
+                result += outputNonRun(Integer.parseInt(readNextSymbol(i+1) + ""), i+2);
+                i += Integer.parseInt(readNextSymbol(i+1) + "") + 2;
+                nextSymbol = readNextSymbol(i);
             }
-//
             
-            if (isControlSymbol(nextSymbol)) {
+            if (!isControlSymbol(nextSymbol)) {
+                i++;
                 nextSymbol = readNextSymbol(i);
             } 
             controSymbol = nextSymbol;
         }
         
-        
+        return result;
         
     }
 
-//    public boolean isControlSymbol(String str) {
-//        return (str.charAt(0) == 'n' || str.charAt(0) == 'r');
-//    }
     public boolean isControlSymbol(char c) {
         return (c == 'n' || c == 'r');
     }
@@ -206,11 +198,6 @@ public class RLE {
     public char readNextSymbol(int start) {
         char result = '\u0000';
 
-//        if (!this.outEncoding.isEmpty()) {
-//            result += this.outEncoding.charAt(start++);
-//            result += this.outEncoding.charAt(start);
-//        }
-        
         if(!this.outEncoding.isEmpty() && start+1 <= this.outEncoding.length()){
             result = this.outEncoding.charAt(start);
         }
@@ -235,35 +222,5 @@ public class RLE {
         return result;
     }
 
-    public static void main(String[] args) {
-
-//        String s = "kkkkkABCvvvvvv";
-//        String compressed = "";
-//        for (int i = 0; i < s.length(); i++) {
-//
-//            char c = s.charAt(i);
-//
-//            int r = 0;
-//            int j = i;
-//            while (i < s.length()) {
-//                if (c == s.charAt(i)) {
-//                    j = i;
-//                    r++;
-//                }
-//                i++;
-//            }
-//
-//            i = j;
-//
-//            if (r < 2) {
-//                compressed += c;
-//            } else {
-//                compressed += "r" + r + c;
-//            }
-//
-//        }
-//
-//        System.outEncoding.println(compressed);
-    }
 
 }

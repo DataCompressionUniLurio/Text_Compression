@@ -56,29 +56,25 @@ public class RLETest {
     public void test4() {
         System.out.println("test4");
         RLE rle = new RLE("XXXX");
-        rle.encode();
-        assertEquals("r4X", rle.outEncoding);
+        String str = rle.encode();
+        assertEquals("r4X", str);
     }
 
     @Test
     public void test5() {
 
-        System.out.println("---Begin----");
         System.out.println("test5");
         RLE rle = new RLE("  X");
-        rle.encode();
-        assertEquals("r2n1X", rle.outEncoding);
-        System.out.println("---End----");
+        String str = rle.encode();
+        assertEquals("r2n1X", str);
     }
 
     @Test
     public void test6() {
-        System.out.println("---Begin----");
         System.out.println("test6");
         RLE rle = new RLE("ABC");
-        rle.encode();
-        assertEquals("n3ABC", rle.outEncoding);
-        System.out.println("---End----");
+        String str = rle.encode();
+        assertEquals("n3ABC", str);
     }
 
     @Test
@@ -86,8 +82,8 @@ public class RLETest {
 
         System.out.println("test7");
         RLE rle = new RLE("ABCXXX");
-        rle.encode();
-        assertEquals("n3ABCr3X", rle.outEncoding);
+        String str = rle.encode();
+        assertEquals("n3ABCr3X", str);
     }
     
      @Test
@@ -95,8 +91,8 @@ public class RLETest {
 
         System.out.println("test8");
         RLE rle = new RLE("XXXXABC");
-        rle.encode();
-        assertEquals("r4Xn3ABC", rle.outEncoding);
+        String str = rle.encode();
+        assertEquals("r4Xn3ABC", str);
     }
     
     
@@ -105,43 +101,42 @@ public class RLETest {
     public void test9() {
         System.out.println("test9");
         RLE rle = new RLE("  XXXX ABCGG");
-        rle.encode();
-        assertEquals("r2r4Xn6 ABCGG", rle.outEncoding);
+        String str = rle.encode();
+        assertEquals("r2r4Xn6 ABCGG", str);
     }
     
     @Test
     public void test10(){
         System.out.println("test10");
         RLE rle = new RLE("ABABBBC");
-        rle.encode();
-        assertEquals("n3ABAr3Bn1C", rle.outEncoding);
-    }
-    
-    @Test
-    public void test11(){
-    
-//         RLE rle = new RLE("ABABBBC");
-//         assertTrue(rle.isControlSymbol("n2"));
-//         assertTrue(rle.isControlSymbol("r5"));
-    }
-    
-    
-     @Test
-    public void test12(){
-//        System.out.println("test12");
-//        RLE rle = new RLE("ABABBBC");
-//        rle.encode();
-//        assertEquals("n3", rle.readNextSymbol(0));
+        String str = rle.encode();
+        assertEquals("n3ABAr3Bn1C", str);
     }
     
     @Test 
         public void test13(){
     
-         System.out.println("test13");
-        RLE rle = new RLE("   BBBCB");
-        rle.encode();
-        System.out.println("--------------------------------------------------------");
-        rle.decode();
+        System.out.println("test13");
+        String str = "   BBBCB";
+        RLE rle = new RLE(str);
+        String encoded = rle.encode();
+        assertEquals("r3r3Bn2CB", encoded);
+        String decoded = rle.decode();
+        assertEquals(decoded, str);
+    
+    }
+        
+        
+        @Test 
+        public void test12(){
+    
+        System.out.println("test12");
+        String str = "ABABBBC";
+        RLE rle = new RLE(str);
+        String encoded = rle.encode();
+        assertEquals("n3ABAr3Bn1C", encoded);
+        String decoded = rle.decode();
+        assertEquals(decoded, str);
     
     }
     
