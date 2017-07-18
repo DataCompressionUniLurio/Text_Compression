@@ -19,7 +19,7 @@ public class RLE {
 
     public int index;
     private String outEncoding;
-    private String outDecoding;
+   
 
     public RLE(String s) {
         this.str = new StringBuilder(s);

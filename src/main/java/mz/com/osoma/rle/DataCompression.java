@@ -26,23 +26,22 @@ public class DataCompression {
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             
-            if(!ht.containsKey((int)c)){
-                ht.put((int) c, 1);
+            if(!ht.containsKey(c)){
+                ht.put(c, 1);
             }else{
-                ht.put((int) c, (int)ht.get((int) c) + 1);
+                ht.put(c, (int)ht.get(c) + 1);
             }
         }
         
         characters = ht.keys();
         
         while(characters.hasMoreElements()){
-            int c = (int) characters.nextElement();
-            System.out.print((char)c);
+            char c = (char) characters.nextElement();
+            System.out.print(c+" freq ="+(int)ht.get(c));
         }
         
          System.out.println("");
          
-        System.out.println("e = " + ht.get((int)'e'));
         
        
                
