@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mz.com.osoma.huffman;
+package mz.com.osoma.shannonfano;
 
-import junit.framework.Assert;
 import org.junit.AfterClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -14,9 +13,9 @@ import static org.junit.Assert.*;
  *
  * @author feler
  */
-public class HuffmanTreeTest {
+public class ShannoFanoTest {
     
-    public HuffmanTreeTest() {
+    public ShannoFanoTest() {
     }
     
     @AfterClass
@@ -27,16 +26,13 @@ public class HuffmanTreeTest {
     public void testSomeMethod() {
     }
     
-    
     @Test
-    public void test() {
-
-        String message = "Alleluia, praise the LORD!!!";
-        HuffmanTree tree = new HuffmanTree();
-
-        String encoded = tree.encode(message);
-        String decoded = tree.decode(encoded);
+    public void test(){
+        ShannoFano sf = new ShannoFano();
         
-        Assert.assertEquals(decoded, message);
+        String message = "AAAAAAAAAAAAAAABBBBBBBCCCCCCDDDDDDEEEEE";
+        String encoded = sf.encode(message);
+        assertEquals(encoded, "00000000000000000000000000000001010101010101110110110110110110100100100100100100111111111111111");
     }
+    
 }
