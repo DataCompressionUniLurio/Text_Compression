@@ -32,7 +32,7 @@ public class HuffmanTreeTest {
     public void test() {
 
         String message = "Alleluia, praise the LORD!!!";
-        HuffmanTree tree = new HuffmanTree();
+        HuffmanTree tree = new HuffmanTree(message);
 
         String encoded = tree.encode(message);
         String decoded = tree.decode(encoded);

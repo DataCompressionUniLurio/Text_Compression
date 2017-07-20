@@ -32,7 +32,8 @@ public class ShannoFanoTest {
         
         String message = "AAAAAAAAAAAAAAABBBBBBBCCCCCCDDDDDDEEEEE";
         String encoded = sf.encode(message);
-        assertEquals(encoded, "00000000000000000000000000000001010101010101110110110110110110100100100100100100111111111111111");
+        String decoded = sf.decode(encoded);
+        assertEquals(message, decoded);
     }
     
 }

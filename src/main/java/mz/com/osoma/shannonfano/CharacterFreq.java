@@ -19,6 +19,7 @@ public class CharacterFreq {
         this.frequency = frequency;
     }
 
+    @Override
     public String toString() {
         return "[" + character + ", " + frequency + "]";
     }

@@ -21,6 +21,12 @@ public class HuffmanNode implements Comparable<Object>{
         this.frequency = frequency;
     }
     
+    public HuffmanNode(String character){
+        this.character = character;
+        this.leftChild = null;
+        this.rightChild = null;
+    }
+    
     @Override
     public String toString(){
         return "{"+character+", "+frequency+"}";

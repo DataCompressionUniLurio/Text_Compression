@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Stack;
 import mz.com.osoma.huffman.HuffmanNode;
 
 /**
@@ -44,22 +45,97 @@ public class ShannoFano {
         createFrequencyTable(message);
         shannoFano(this.frequency);
 
-         String result = new String();
+        String result = new String();
 
         for (int i = 0; i < message.length(); i++) {
             int index = (int) message.charAt(i);
             result += codeTable[index];
         }
+
+        createTree();
+        System.out.println(this);
         return result;
+    }
+    
+    public String decode(String codedMessage) {
+
+        String result = new String();
+        HuffmanNode temp = root;
+        int i = 0;
+        while (i < codedMessage.length()) {
+            if (temp.character == null) {
+                if (codedMessage.charAt(i) == '0') {
+                    temp = temp.leftChild;
+                } else if (codedMessage.charAt(i) == '1') {
+                    temp = temp.rightChild;
+                }
+                i++;
+            } else {
+                result += temp.character;
+                temp = root;
+            }
+        }
+        result += temp.character;	//parse the last character
+
+        return result;
+
+    }
+
+    private void createTree() {
+
+        root = new HuffmanNode(sum(this.frequency));
+
+        for (int i = 0; i < frequency.length; i++) {
+            int index = (int) frequency[i].character.charAt(0);
+            String codeword = codeTable[index];
+
+            HuffmanNode current = root;
+            HuffmanNode parent = root;
+            for (int j = 0; j < codeword.length() - 1; j++) {
+                
+                if (codeword.charAt(j) == '0') {
+
+                    if (current.leftChild == null) {
+                        current.leftChild = new HuffmanNode(0);
+                    }
+
+                    current = current.leftChild;
+                }
+
+                if (codeword.charAt(j) == '1') {
+                    if (current.rightChild == null) {
+                        current.rightChild = new HuffmanNode(0);
+                    }
+                    current = current.rightChild;
+                }
+                parent = current;
+            }
+            int j = codeword.length() - 1;
+            parent.frequency = parent.frequency + frequency[i].frequency;
+            if (codeword.charAt(j) == '0') {
+                if (current.leftChild == null) {
+                    current.leftChild = new HuffmanNode(frequency[i].character);
+                }
+            }
+
+            if (codeword.charAt(j) == '1') {
+                if (current.rightChild == null) {
+                    current.rightChild = new HuffmanNode(frequency[i].character);
+                }
+            }
+
+            current = root;
+        }
     }
 
     public void shannoFano(CharacterFreq[] array) {
 
-        System.out.println("\n\n-----------------------------");
         if (array.length < 3) {
+
             char tempL = array[0].character.charAt(0);
             if (codeTable[tempL] == null) {
                 codeTable[tempL] = "";
+
             }
             codeTable[tempL] = codeTable[tempL] + '0';
 
@@ -84,26 +160,28 @@ public class ShannoFano {
         System.out.println("right");
         System.out.println(Arrays.toString(arrayright));
 
-        for (CharacterFreq a : arrayLeft) {
-            char temp = a.character.charAt(0);
-            if (codeTable[temp] == null) {
-                codeTable[temp] = "";
+        if (arrayLeft.length > 1) {
+            for (CharacterFreq a : arrayLeft) {
+                char temp = a.character.charAt(0);
+                if (codeTable[temp] == null) {
+                    codeTable[temp] = "";
+                }
+                codeTable[temp] = codeTable[temp] + '0';
             }
-            codeTable[temp] = codeTable[temp] + '0';
         }
 
-        for (CharacterFreq a : arrayright) {
-            char temp = a.character.charAt(0);
-            if (codeTable[temp] == null) {
-                codeTable[temp] = "";
+        if (arrayright.length > 1) {
+            for (CharacterFreq a : arrayright) {
+                char temp = a.character.charAt(0);
+                if (codeTable[temp] == null) {
+                    codeTable[temp] = "";
+                }
+                codeTable[temp] = codeTable[temp] + '1';
             }
-            codeTable[temp] = codeTable[temp] + '1';
         }
 
         shannoFano(arrayLeft);
-        System.out.println("segunda recursao");
         shannoFano(arrayright);
-
     }
 
     public void createFrequencyTable(String message1) throws NumberFormatException {
@@ -150,10 +228,6 @@ public class ShannoFano {
         return subArray;
     }
 
-    public String decode(String codedMessage) {
-        return "";
-    }
-
     public Hashtable<String, String> buildFrequencyTable(String s) {
 
         Hashtable<String, String> ht = new Hashtable<>();
@@ -189,6 +263,57 @@ public class ShannoFano {
             frequency[i + 1] = item;
             totalItems++;
         }
+    }
+
+    @Override
+    public String toString() {
+
+        Stack globalStack = new Stack();
+        globalStack.push(root);
+        int nBlanks = 32;
+        boolean isRowEmpty = false;
+
+        StringBuilder builder = new StringBuilder(".......................................................\n");
+
+        while (isRowEmpty == false) {
+            Stack localStack = new Stack();
+            isRowEmpty = true;
+
+            for (int j = 0; j < nBlanks; j++) {
+                builder.append(" ");
+
+            }
+
+            while (globalStack.isEmpty() == false) {
+                HuffmanNode temp = (HuffmanNode) globalStack.pop();
+                if (temp != null) {
+
+                    builder.append((temp.character != null) ? temp.character : temp.frequency);
+                    localStack.push(temp.leftChild);
+                    localStack.push(temp.rightChild);
+
+                    if (temp.leftChild != null
+                            || temp.rightChild != null) {
+                        isRowEmpty = false;
+                    }
+                } else {
+                    builder.append("--");
+                    localStack.push(null);
+                    localStack.push(null);
+                }
+                for (int j = 0; j < nBlanks * 2 - 2; j++) {
+                    builder.append(" ");
+                }
+            } //end while globalStack not empty
+            builder.append("\n");
+            nBlanks /= 2;
+            while (localStack.isEmpty() == false) {
+                globalStack.push(localStack.pop());
+            }
+        } //end while isRowEmpty is false
+
+        builder.append(".......................................................\n");
+        return builder.toString();
     }
 
 }
