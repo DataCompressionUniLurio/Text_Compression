@@ -131,10 +131,10 @@ public class RLETest {
         public void test12(){
     
         System.out.println("test12");
-        String str = "ABABBBC";
+        String str = "ABABBBCG";
         RLE rle = new RLE(str);
         String encoded = rle.encode();
-        assertEquals("n3ABAr3Bn1C", encoded);
+        assertEquals("n3ABAr3Bn2CG", encoded);
         String decoded = rle.decode();
         assertEquals(decoded, str);
     

@@ -30,8 +30,19 @@ public class ShannoFanoTest {
     public void test(){
         ShannoFano sf = new ShannoFano();
         
-        String message = "AAAAAAAAAAAAAAABBBBBBBCCCCCCDDDDDDEEEEE";
+//        String message = "AAAAAAAAAAAAAAABBBBBBBCCCCCCDDDDDDEEEEE";
+        
+        String message = "MIGGGGEEEL";
+        
+        for (int i = 0; i < message.length(); i++) {
+             System.out.print(Integer.toBinaryString((int) message.charAt(i)));
+        }
+        System.out.println("");
+        
         String encoded = sf.encode(message);
+        System.out.println(encoded);
+        
+        
         String decoded = sf.decode(encoded);
         assertEquals(message, decoded);
     }

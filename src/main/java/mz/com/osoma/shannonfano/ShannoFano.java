@@ -20,21 +20,18 @@ public class ShannoFano {
 
     private HuffmanNode root;
     private String[] codeTable;
-    private String huffmanCode;
+//    private String huffmanCode;
     private CharacterFreq[] frequency;
     private int totalItems;
     private String message;
 
     public ShannoFano(String message) {
 
-        huffmanCode = "";
         codeTable = new String[128]; //going to keep it ASCII for simplicity
         this.message = message;
     }
 
     public ShannoFano() {
-
-        huffmanCode = "";
         codeTable = new String[128]; //going to keep it ASCII for simplicity
     }
 
@@ -84,9 +81,13 @@ public class ShannoFano {
     private void createTree() {
 
         root = new HuffmanNode(sum(this.frequency));
+        
+        
+        System.out.println("--------------------------------->"+sum(this.frequency));
 
         for (int i = 0; i < frequency.length; i++) {
             int index = (int) frequency[i].character.charAt(0);
+            System.out.println("--------------------------------->"+codeTable[index]);
             String codeword = codeTable[index];
 
             HuffmanNode current = root;
@@ -111,7 +112,11 @@ public class ShannoFano {
                 parent = current;
             }
             int j = codeword.length() - 1;
+            
+            if(j > 0)
             parent.frequency = parent.frequency + frequency[i].frequency;
+            
+            
             if (codeword.charAt(j) == '0') {
                 if (current.leftChild == null) {
                     current.leftChild = new HuffmanNode(frequency[i].character);
