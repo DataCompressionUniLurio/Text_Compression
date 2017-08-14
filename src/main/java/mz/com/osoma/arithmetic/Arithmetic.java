@@ -16,7 +16,10 @@ import java.util.ArrayList;
  */
 
 public class Arithmetic {
-    
+    public static ArrayList<Double> probability = new ArrayList<>();
+    public static ArrayList<String> symbol = new ArrayList<>();
+    public static String symbols;
+    public static double result;
     
     public static void sortString(ArrayList<String> c, ArrayList<Double> p) {
         for (int i = 0; i < c.size(); i++) {
@@ -36,48 +39,52 @@ public class Arithmetic {
         }
     }
     
-     
-    public static void compression(String symbols) {
+    /**
+     *
+     */
+    public static void compression(String texto) {
+        System.out.println("Texto Bruto (Original):" +texto);
+        symbols = texto;
         String temp1="";
         String temp2="";
         double size=0;
         double counter=0;
         boolean key; 
-        ArrayList<Double> probability = new ArrayList<Double>();
-        ArrayList<String> symbol = new ArrayList<String>();
-        for(int i=0; i<symbols.length();i++) {
-            temp1+=symbols.charAt(i);
-            key=symbol.contains(temp1);
-            if(key){}
-            else{
+//        ArrayList<Double> probability = new ArrayList<Double>();
+//        ArrayList<String> symbol = new ArrayList<String>();
+        for(int i = 0; i < symbols.length(); i++) {
+            temp1 += symbols.charAt(i);
+            key = symbol.contains(temp1);
+            if(key){
+            }else{
                 symbol.add(temp1);
-                for(int j=0;j<symbols.length();j++) {
-                    temp2+=symbols.charAt(j);
+                for(int j = 0 ; j < symbols.length(); j++) {
+                    temp2 += symbols.charAt(j);
                     if(temp1.contains(temp2))
                         counter++; 
                         temp2="";
                 }
-                size=(counter/symbols.length());
+                size = (counter/symbols.length());
                 probability.add(size);
             }
-            counter=0;
-            temp1="";
+            counter = 0;
+            temp1 = "";
         }
         
         sortString(symbol, probability);
-        double temp=0;
-        ArrayList<Double> comulitive = new ArrayList<Double>();
-        for(int i=0; i<probability.size(); i++) {
-            temp+=probability.get(i);
-            if(i==probability.size()-1) {
+        double temp = 0;
+        ArrayList<Double> comulitive = new ArrayList<>();
+        for(int i = 0; i < probability.size(); i++) {
+            temp += probability.get(i);
+            if(i == probability.size()-1) {
                 comulitive.add(1.0); 
             }
             else comulitive.add(temp);
         }
-        ArrayList<Double> com = new ArrayList<Double>();
+        ArrayList<Double> com = new ArrayList<>();
         com.addAll(comulitive);
-        double L=0;
-        double U=0;
+        double L = 0;
+        double U = 0;
         for (int i = 0; i < symbols.length(); i++) {
             String str = "";
             str += symbols.charAt(i);
@@ -91,75 +98,83 @@ public class Arithmetic {
                 comulitive.set(k, L + (U - L) * com.get(k));
             }
         }
-        double result = (L+U)/2;
-        System.out.println("Resultado Decimal: " +result);
+        result = (L+U)/2;
+        System.out.println("Decimal Escolhido: " +result);
         encoding(result);
     }
     
     
     public static String encoding(double decimalValue){
         int intBits = Float.floatToRawIntBits((float) decimalValue); 
-//        System.out.println("Inteiro do Float:" +intBits);
         String bits = Integer.toBinaryString(intBits);
-//        System.out.println("Resultado Binario: " +bits);
-        
-       decoding(bits);
+ 
+        System.out.println("Decimal - Binario: " +bits);
+        decoding(bits);
         return bits;
-        
     }
     
-    public static void decoding(String bynaryValue){
+    public static float decoding(String bynaryValue){
         long l = new BigInteger(bynaryValue, 2).longValue();
-        int j = (int) Integer.toUnsignedLong((int) l);
-        System.out.println("Inteiro Decoding: " +l);
-        double i = Float.intBitsToFloat(j);
-        System.out.println("Decimal:" +i);
+        double i = Float.intBitsToFloat((int) l);
         
-//        return (float) i;
+        System.out.println("Binario - Decimal: " +i);
+        return (float) i;
     }
+    
     public static void decompression(ArrayList<Double> prob,
             ArrayList<String> characters, Double res, int length) {
-        double temp=0.0;
+        double temp = 0.0;
         ArrayList<Double> comulitive = new ArrayList<Double>();
-        for(int i=0; i<prob.size(); i++) {
-            temp+=prob.get(i);
-            if(i==prob.size()-1) {
+        System.out.println("ProbSize: " +probability.size());
+        for(int i = 0; i < prob.size(); i++) {
+            temp += prob.get(i);
+            if(i == prob.size()-1) {
                 comulitive.add(1.0);
             }
             else comulitive.add(temp);
-        }
+        } //poe as probablidades na lista comulitive//no final poe 1
+        
         ArrayList<Double> com = new ArrayList<Double>();
-        com.addAll(comulitive);
-        double L=0;
-        double U=0;
+        com.addAll(comulitive); //adiciona todas as probablidades na lista com
+        double L = 0;
+        double U = 0;
         String str = "";
-        for (int i = 0; i < length; i++) {
+        
+        for (int i = 0; i < length; i++) { //Enquanto for menor o tamanho do texto
             int j;
-            for(j=0; j<characters.size(); j++) {
-                if(res<comulitive.get(j)) {
-                    str+=characters.get(j);
-                    break;
+            for(j = 0; j < characters.size(); j++) {//enquanto for menor que o numro de caracteres que la existem
+                System.out.println("Impriminto o J: " +j);
+                if(res < comulitive.get(j)) {//se o decimal de ponto flutuante for menor que a probabilidade
+                    str += characters.get(j);//por o caracter na variavell
+                    break;//se tirar o break o indice fica fora do intervalo
+                    }
                 }
-            }
+            
             if (j == 0) {
+                System.out.println("Entro aqui");
+                //se estiver na posicao 0 da palavra introduzida faz nada
             } else {
-                    L = comulitive.get(j - 1);
+                    L = comulitive.get(j-1); 
+                    System.out.println("Agora estou no L");
             }
+            
             U = comulitive.get(j);
             for (int k = 0; k < characters.size(); k++) {
-                    comulitive.set(k, L + (U - L) * com.get(k));
+                    comulitive.set(k, (U - L) * com.get(k));
             }
         }
-        System.out.println("Str: " +str);
+        System.out.println("Texto Descomprimido: " +str);
     }
      
+    
+    
     public static void main(String[] args) {
         
-        String texto = "aac";
+        String texto = "abcdesgaaaaaa mmmm bbggaaaa";
         int tamanhoTexto = texto.length();
         
         compression(texto); 
-        decompression(null, null, Double.NaN, tamanhoTexto);
+        decompression(probability, symbol, result, tamanhoTexto);
 
     }
 
