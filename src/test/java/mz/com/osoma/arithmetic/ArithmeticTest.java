@@ -12,9 +12,9 @@ import static org.junit.Assert.*;
  *
  * @author aphie_d
  */
-public class NewEmptyJUnitTest {
+public class ArithmeticTest {
     
-    public NewEmptyJUnitTest() {
+    public ArithmeticTest() {
     }
     
     

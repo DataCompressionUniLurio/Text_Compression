@@ -88,6 +88,7 @@ public class Arithmetic {
         for (int i = 0; i < symbols.length(); i++) {
             String str = "";
             str += symbols.charAt(i);
+            System.out.println("str:" +str);
             int index = symbol.indexOf(str);
             if (index == 0) {
             } else {
@@ -98,6 +99,8 @@ public class Arithmetic {
                 comulitive.set(k, L + (U - L) * com.get(k));
             }
         }
+        System.out.println("L:" +L);
+        System.out.println("U:" +U);
         result = (L+U)/2;
         System.out.println("Decimal Escolhido: " +result);
         encoding(result);
@@ -143,24 +146,23 @@ public class Arithmetic {
         for (int i = 0; i < length; i++) { //Enquanto for menor o tamanho do texto
             int j;
             for(j = 0; j < characters.size(); j++) {//enquanto for menor que o numro de caracteres que la existem
-                System.out.println("Impriminto o J: " +j);
-                if(res < comulitive.get(j)) {//se o decimal de ponto flutuante for menor que a probabilidade
+                if(res <= comulitive.get(j)) {//se o decimal de ponto flutuante for menor que a probabilidade
                     str += characters.get(j);//por o caracter na variavell
                     break;//se tirar o break o indice fica fora do intervalo
-                    }
+                    }else{
+                    str += characters.get(i);
+                    break;
                 }
-            
+                }
             if (j == 0) {
-                System.out.println("Entro aqui");
                 //se estiver na posicao 0 da palavra introduzida faz nada
             } else {
                     L = comulitive.get(j-1); 
-                    System.out.println("Agora estou no L");
             }
             
             U = comulitive.get(j);
             for (int k = 0; k < characters.size(); k++) {
-                    comulitive.set(k, (U - L) * com.get(k));
+                    comulitive.set(k, L + (U - L) * com.get(k));
             }
         }
         System.out.println("Texto Descomprimido: " +str);
@@ -169,13 +171,10 @@ public class Arithmetic {
     
     
     public static void main(String[] args) {
-        
-        String texto = "abcdesgaaaaaa mmmm bbggaaaa";
+        String texto = "abcdefghijklmnopqrstuvwxyz0123456789";
         int tamanhoTexto = texto.length();
-        
         compression(texto); 
         decompression(probability, symbol, result, tamanhoTexto);
-
     }
 
 }
