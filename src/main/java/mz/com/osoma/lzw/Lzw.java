@@ -75,7 +75,7 @@ public class Lzw {
     }
  
     public static void main(String[] args) {
-        List<Integer> compressed = encoding("TOBEORNOTTOBEORTOBEORNOT TOBEORNOTTOBEORTOBEORNOT TOBEORNOTTOBEORTOBEORNOT TOBEORNOTTOBEORTOBEORNOT");
+        List<Integer> compressed = encoding("TOBEORNOTTOBEORTOBEORNOT");
         String decompressed = decoding(compressed);
     }
 }
