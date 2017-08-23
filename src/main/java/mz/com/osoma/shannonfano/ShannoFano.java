@@ -10,13 +10,14 @@ import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Stack;
+import mz.com.osoma.compressable;
 import mz.com.osoma.huffman.HuffmanNode;
 
 /**
  *
  * @author feler
  */
-public class ShannoFano {
+public class ShannoFano implements compressable{
 
     private HuffmanNode root;
     private String[] codeTable;

@@ -1,5 +1,6 @@
-package mz.com.osoma.adaptivehuffman;
+package mz.com.osoma;
 
+import mz.com.osoma.adaptivehuffman.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -59,30 +60,30 @@ public class FileHandler {
 		}
 	}
 
-	public static void writeSymbolToFile(String url, ArrayList<Symbol> symbolList) {
-		try {
-			FileWriter fw = new FileWriter(url);
-			BufferedWriter bw = new BufferedWriter(fw);
-			
-			for ( Symbol s: symbolList ){
-
-				if ( s.letter.equals("\n") ) {
-					bw.write( "lineWrapper" + " " + s.probability + " " + s.low + " " + s.high );
-				}
-				else if ( s.letter.equals(" ") ){
-					bw.write( "space" + " " + s.probability + " " + s.low + " " + s.high );
-				} else {
-					bw.write( s.letter + " " + s.probability + " " + s.low + " " + s.high );
-				}
-				bw.newLine();
-			}
-			bw.close();
-			fw.close();
-			
-			System.out.println("Writing file completed!");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	public static void writeSymbolToFile(String url, ArrayList<Symbol> symbolList) {
+//		try {
+//			FileWriter fw = new FileWriter(url);
+//			BufferedWriter bw = new BufferedWriter(fw);
+//			
+//			for ( Symbol s: symbolList ){
+//
+//				if ( s.letter.equals("\n") ) {
+//					bw.write( "lineWrapper" + " " + s.probability + " " + s.low + " " + s.high );
+//				}
+//				else if ( s.letter.equals(" ") ){
+//					bw.write( "space" + " " + s.probability + " " + s.low + " " + s.high );
+//				} else {
+//					bw.write( s.letter + " " + s.probability + " " + s.low + " " + s.high );
+//				}
+//				bw.newLine();
+//			}
+//			bw.close();
+//			fw.close();
+//			
+//			System.out.println("Writing file completed!");
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 }

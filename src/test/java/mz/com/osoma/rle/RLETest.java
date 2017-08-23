@@ -5,6 +5,8 @@
  */
 package mz.com.osoma.rle;
 
+import junit.framework.Assert;
+import mz.com.osoma.FileHandler;
 import org.junit.AfterClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -14,10 +16,10 @@ import static org.junit.Assert.*;
  * @author feler
  */
 public class RLETest {
-    
+
     public RLETest() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
@@ -25,8 +27,7 @@ public class RLETest {
     @Test
     public void testSomeMethod() {
     }
-    
-    
+
     @Test
     public void test1() {
         RLE rle = new RLE("  b");
@@ -55,8 +56,8 @@ public class RLETest {
     @Test
     public void test4() {
         System.out.println("test4");
-        RLE rle = new RLE("XXXX");
-        String str = rle.encode();
+        RLE rle = new RLE();
+        String str = rle.encode("XXXX");
         assertEquals("r4X", str);
     }
 
@@ -64,16 +65,16 @@ public class RLETest {
     public void test5() {
 
         System.out.println("test5");
-        RLE rle = new RLE("  X");
-        String str = rle.encode();
+        RLE rle = new RLE();
+        String str = rle.encode("  X");
         assertEquals("r2n1X", str);
     }
 
     @Test
     public void test6() {
         System.out.println("test6");
-        RLE rle = new RLE("ABC");
-        String str = rle.encode();
+        RLE rle = new RLE();
+        String str = rle.encode("ABC");
         assertEquals("n3ABC", str);
     }
 
@@ -81,63 +82,76 @@ public class RLETest {
     public void test7() {
 
         System.out.println("test7");
-        RLE rle = new RLE("ABCXXX");
-        String str = rle.encode();
+        RLE rle = new RLE();
+        String str = rle.encode("ABCXXX");
         assertEquals("n3ABCr3X", str);
     }
-    
-     @Test
+
+    @Test
     public void test8() {
 
         System.out.println("test8");
-        RLE rle = new RLE("XXXXABC");
-        String str = rle.encode();
+        RLE rle = new RLE();
+        String str = rle.encode("XXXXABC");
         assertEquals("r4Xn3ABC", str);
     }
-    
-    
-    
-     @Test
+
+    @Test
     public void test9() {
         System.out.println("test9");
-        RLE rle = new RLE("  XXXX ABCGG");
-        String str = rle.encode();
+        String message = "  XXXX ABCGG";
+        RLE rle = new RLE();
+        String str = rle.encode(message);
         assertEquals("r2r4Xn6 ABCGG", str);
     }
-    
+
     @Test
-    public void test10(){
+    public void test10() {
         System.out.println("test10");
-        RLE rle = new RLE("ABABBBC");
-        String str = rle.encode();
+        String message = "ABABBBC";
+        RLE rle = new RLE();
+        String str = rle.encode(message);
         assertEquals("n3ABAr3Bn1C", str);
     }
-    
-    @Test 
-        public void test13(){
-    
+
+    @Test
+    public void test13() {
+
         System.out.println("test13");
         String str = "   BBBCB";
         RLE rle = new RLE(str);
-        String encoded = rle.encode();
+        String encoded = rle.encode(str);
         assertEquals("r3r3Bn2CB", encoded);
-        String decoded = rle.decode();
+        String decoded = rle.decode(encoded);
         assertEquals(decoded, str);
-    
+
     }
-        
-        
-        @Test 
-        public void test12(){
-    
+
+    @Test
+    public void test12() {
+
         System.out.println("test12");
         String str = "ABABBBCG";
         RLE rle = new RLE(str);
-        String encoded = rle.encode();
+        String encoded = rle.encode(str);
         assertEquals("n3ABAr3Bn2CG", encoded);
-        String decoded = rle.decode();
+        String decoded = rle.decode(encoded);
         assertEquals(decoded, str);
-    
+
     }
-    
+
+    @Test
+    public void test14() {
+
+        String message = FileHandler.readFile("src//main//resources//input.txt", true);
+        
+        message = message.substring(0, message.length() );
+        RLE rle = new RLE(message);
+        String encoded = rle.encode(message);
+        
+        
+        String decoded = rle.decode(encoded);
+        Assert.assertEquals(message, decoded);
+    }
+
 }

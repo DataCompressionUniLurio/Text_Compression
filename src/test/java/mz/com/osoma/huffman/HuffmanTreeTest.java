@@ -6,19 +6,19 @@
 package mz.com.osoma.huffman;
 
 import junit.framework.Assert;
+import mz.com.osoma.FileHandler;
 import org.junit.AfterClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
  * @author feler
  */
 public class HuffmanTreeTest {
-    
+
     public HuffmanTreeTest() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
@@ -26,17 +26,17 @@ public class HuffmanTreeTest {
     @Test
     public void testSomeMethod() {
     }
-    
-    
+
     @Test
     public void test() {
 
-        String message = "Alleluia, praise the LORD!!!";
+        String message = FileHandler.readFile("src//main//resources//input.txt", true);
+        message = message.substring(0, message.length());
         HuffmanTree tree = new HuffmanTree(message);
 
         String encoded = tree.encode(message);
         String decoded = tree.decode(encoded);
-        
-        Assert.assertEquals(decoded, message);
+
+        Assert.assertEquals(message, decoded);
     }
 }

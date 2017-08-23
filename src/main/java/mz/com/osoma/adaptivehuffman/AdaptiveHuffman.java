@@ -5,8 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
+import mz.com.osoma.compressable;
 
-public class AdaptiveHuffman {
+public class AdaptiveHuffman implements compressable{
 
     private Node nytNode;
     private Node root;
@@ -22,6 +23,7 @@ public class AdaptiveHuffman {
 
     protected ArrayList<String> friendlyOutput;
 
+    public AdaptiveHuffman(){}
     public AdaptiveHuffman(char[] codeStr) {
         this.codeStr = codeStr;
         alreadyExist = new ArrayList<>();
@@ -317,42 +319,42 @@ public class AdaptiveHuffman {
         }
         return result;
     }
-
-
-    protected static String catStr(ArrayList<String> l) {
-        String result = "";
-        for (String s : l) {
-            result += s;
-        }
-        return result;
-    }
+//
+//
+//    protected static String catStr(ArrayList<String> l) {
+//        String result = "";
+//        for (String s : l) {
+//            result += s;
+//        }
+//        return result;
+//    }
     /**
      * @param args
      */
-    public static void main(String[] args) throws FileNotFoundException {
-        mainEncode();
-        mainDecode();
-
-    }
-
-    public static void mainDecode() {
-        String code = FileHandler.readFile("compressed.txt", false);
-        AdaptiveHuffman ah = new AdaptiveHuffman(code.toCharArray());
-        String result = ah.decode();
-        FileHandler.writeFile("output.txt", result, false);
-    }
-
-    public static void mainEncode() {
-        String text = FileHandler.readFile("input.txt", true);
-        text = text.substring(0, text.length() );
-        AdaptiveHuffman ah = new AdaptiveHuffman(text.toCharArray());
-        ArrayList<String> code = ah.encode();
-        FileHandler.writeFile("compressed.txt", catStr(code), true);
-        FileHandler.writeFile("compressedFriendly.txt", catStr(ah.friendlyOutput), true);
-        for(int i=0;i<code.size()-1;i++){
-            System.out.println("symbol="+text.charAt(i)+"\tcode="+code.get(i));
-        }
-    }
+//    public static void main(String[] args) throws FileNotFoundException {
+//        mainEncode();
+//        mainDecode();
+//
+//    }
+//
+//    public static void mainDecode() {
+//        String code = FileHandler.readFile("compressed.txt", false);
+//        AdaptiveHuffman ah = new AdaptiveHuffman(code.toCharArray());
+//        String result = ah.decode();
+//        FileHandler.writeFile("output.txt", result, false);
+//    }
+//
+//    public static void mainEncode() {
+//        String text = FileHandler.readFile("input.txt", true);
+//        text = text.substring(0, text.length() );
+//        AdaptiveHuffman ah = new AdaptiveHuffman(text.toCharArray());
+//        ArrayList<String> code = ah.encode();
+//        FileHandler.writeFile("compressed.txt", catStr(code), true);
+//        FileHandler.writeFile("compressedFriendly.txt", catStr(ah.friendlyOutput), true);
+//        for(int i=0;i<code.size()-1;i++){
+//            System.out.println("symbol="+text.charAt(i)+"\tcode="+code.get(i));
+//        }
+//    }
 
     /* DRAW METHODS */
     public int height() {
@@ -402,6 +404,38 @@ public class AdaptiveHuffman {
             n.ypos = depth; // mark y coord as depth
             inorder_traversal(n.right, depth + 1);
         }
+    }
+
+    @Override
+    public String decode(String encodedMessage) {
+//        codeStr = encodedMessage.toCharArray();
+        return decode();
+    }
+
+    @Override
+    public String encode(String message) {
+        
+        this.codeStr = message.toCharArray();
+        alreadyExist = new ArrayList<>();
+        nodeList = new ArrayList<>();
+        friendlyOutput = new ArrayList<>();
+
+        //Initialize the nyt Node.
+        nytNode = new Node("NYT", 0);
+        nytNode.parent = null;
+        root = nytNode;
+        nodeList.add(nytNode);
+        
+        return listToString(encode());
+    }
+    
+    private String listToString(ArrayList<String> encoded){
+        String result = "";
+        for (String s : encoded) {
+            result += s;
+            
+        }
+        return result;
     }
 
 }

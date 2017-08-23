@@ -2,12 +2,13 @@ package mz.com.osoma.huffman;
 
 import java.util.Hashtable;
 import java.util.Stack;
+import mz.com.osoma.compressable;
 
 /**
  *
  * @author feler
  */
-public class HuffmanTree {
+public class HuffmanTree implements compressable{
 
     private HuffmanNode root;
     private String[] codeTable;

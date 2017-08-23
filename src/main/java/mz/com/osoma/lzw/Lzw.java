@@ -9,15 +9,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import mz.com.osoma.compressable;
 
 /**
  *
  * @author aphie_d
  */
-public class Lzw {
+public class Lzw implements compressable{
     
     /** Compress a string to a list of output symbols. */
-    public static List<Integer> encoding(String uncompressedText) {
+    private  List<Integer> encoding(String uncompressedText) {
         System.out.println("Texto Bruto: " +uncompressedText);
         // Build the dictionary.
         int dictionarySize = 256;
@@ -45,7 +46,7 @@ public class Lzw {
     }
  
     /** Decompress a list of output ks to a string. */
-    public static String decoding(List<Integer> compressed) {
+    private  String decoding(List<Integer> compressed) {
         // Build the dictionary.
         int dictionarySize = 256;
         Map<Integer,String> dictionary = new HashMap<Integer,String>();
@@ -75,7 +76,49 @@ public class Lzw {
     }
  
     public static void main(String[] args) {
-        List<Integer> compressed = encoding("TOBEORNOTTOBEORTOBEORNOT");
-        String decompressed = decoding(compressed);
+//        List<Integer> compressed = encoding("TOBEORNOTTOBEORTOBEORNOT");
+//        String decompressed = decoding(compressed);
+        
+        Lzw lzw = new Lzw();
+        
+//        System.out.println(lzw.encode("TOBEORNOTTOBEORTOBEORNOT"));
+        
+        String message = "TOBEORNOTTOBEORTOBEORNOT";
+        String encoded = lzw.encode(message);
+        String decoded = lzw.decode(encoded);
+        
+        System.out.println(message);
+        System.out.println(decoded);
+        
+        
+    }
+
+    @Override
+    public String decode(String encodedMessage) {
+        
+        String[] split = encodedMessage.split(",");
+        
+        List<Integer> encoded = new ArrayList<>();
+        for (String split1 : split) {
+            encoded.add(Integer.parseInt(split1));
+        }
+        
+        return decoding(encoded);
+
+    }
+
+    @Override
+    public String encode(String message) {
+        
+        List<Integer> encoded = encoding(message);
+        String result = "";
+        for (int i = 0; i<encoded.size(); i++) {
+            result += encoded.get(i).toString();
+            if(i<encoded.size()-1){
+                 result +=",";
+            }
+        }
+        
+        return result;
     }
 }

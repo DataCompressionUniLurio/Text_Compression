@@ -5,11 +5,13 @@
  */
 package mz.com.osoma.rle;
 
+import mz.com.osoma.compressable;
+
 /**
  *
  * @author feler
  */
-public class RLE {
+public class RLE implements compressable {
 
     StringBuilder str;
 
@@ -19,7 +21,11 @@ public class RLE {
 
     public int index;
     private String outEncoding;
-   
+
+    public RLE() {
+        index = 0;
+        this.outEncoding = "";
+    }
 
     public RLE(String s) {
         this.str = new StringBuilder(s);
@@ -31,7 +37,7 @@ public class RLE {
         this.outEncoding = "";
     }
 
-    public String encode() {
+    private String encode() {
 
         while (index < str.length()) {
 
@@ -44,7 +50,7 @@ public class RLE {
             }
 
         }
-        
+
         return this.outEncoding;
     }
 
@@ -154,41 +160,41 @@ public class RLE {
         return "n" + lenght + word;
     }
 
-    public String decode() {
+    private String decode() {
 
         int i = 0;
         char controSymbol = readNextSymbol(i);
 
         String result = "";
-        
+
         System.out.println(this.outEncoding);
         while (i < this.outEncoding.length()) {
             char nextSymbol = '\u0000';
             if (controSymbol == 'r') {
                 nextSymbol = readNextSymbol(i + 2);
-                
+
                 if (isControlSymbol(nextSymbol)) {
-                    result += output(Integer.parseInt(readNextSymbol(i + 1)+""), ' ');
+                    result += output(Integer.parseInt(readNextSymbol(i + 1) + ""), ' ');
                     i += 2;
                 } else {
-                    result += output(Integer.parseInt(readNextSymbol(i + 1)+""), nextSymbol);
+                    result += output(Integer.parseInt(readNextSymbol(i + 1) + ""), nextSymbol);
                     i += 2;
                 }
             } else {
-                result += outputNonRun(Integer.parseInt(readNextSymbol(i+1) + ""), i+2);
-                i += Integer.parseInt(readNextSymbol(i+1) + "") + 2;
+                result += outputNonRun(Integer.parseInt(readNextSymbol(i + 1) + ""), i + 2);
+                i += Integer.parseInt(readNextSymbol(i + 1) + "") + 2;
                 nextSymbol = readNextSymbol(i);
             }
-            
+
             if (!isControlSymbol(nextSymbol)) {
                 i++;
                 nextSymbol = readNextSymbol(i);
-            } 
+            }
             controSymbol = nextSymbol;
         }
-        
+
         return result;
-        
+
     }
 
     public boolean isControlSymbol(char c) {
@@ -198,7 +204,7 @@ public class RLE {
     public char readNextSymbol(int start) {
         char result = '\u0000';
 
-        if(!this.outEncoding.isEmpty() && start+1 <= this.outEncoding.length()){
+        if (!this.outEncoding.isEmpty() && start + 1 <= this.outEncoding.length()) {
             result = this.outEncoding.charAt(start);
         }
 
@@ -222,5 +228,25 @@ public class RLE {
         return result;
     }
 
+    @Override
+    public String encode(String message) {
+
+        this.str = new StringBuilder(message);
+
+        index = 0;
+        sp = str.charAt(index++);
+        sq = str.charAt(index++);
+        sr = str.charAt(index);
+        this.outEncoding = "";
+
+        return encode();
+
+    }
+
+    @Override
+    public String decode(String encodedMessage) {
+        this.outEncoding = encodedMessage;
+        return decode();
+    }
 
 }

@@ -12,6 +12,7 @@ package mz.com.osoma.adaptivehuffman;
 import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.List;
+import mz.com.osoma.FileHandler;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
@@ -32,18 +33,21 @@ public class AdaptiveHuffmanTest {
     @Test
     public void testEncode() {
         
-        System.out.println("");
-        String text = FileHandler.readFile("src/main/resources/input.txt", true);
-        text = text.substring(0, text.length() - 1);
+        String message = FileHandler.readFile("src/main/resources/input.txt", true);
+        message = message.substring(0, message.length() - 1);
         
-        AdaptiveHuffman ah = new AdaptiveHuffman(text.toCharArray());
+        AdaptiveHuffman ah = new AdaptiveHuffman(message.toCharArray());
+        
+        ah.encode();
+        String decoded = ah.decode();
+        assertEquals(message, decoded);
         
         
-        List<String> out = new ArrayList<>();
-        out.add('0'+Integer.toBinaryString('A'));
-        out.add("1");
-        out.add("1");
-        assertEquals(out, ah.encode());
+//        List<String> out = new ArrayList<>();
+//        out.add('0'+Integer.toBinaryString('A'));
+//        out.add("1");
+//        out.add("1");
+//        assertEquals(out, ah.encode());
     }
  
     
