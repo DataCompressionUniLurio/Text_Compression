@@ -147,10 +147,13 @@ public class RLETest {
         
         message = message.substring(0, message.length() );
         RLE rle = new RLE(message);
-        String encoded = rle.encode(message);
+        String encoded = rle.encode();
+        
+        System.out.println("encoded: "+encoded+"\n");
+        System.out.println("\n\n");
+        String decoded = rle.decode();
         
         
-        String decoded = rle.decode(encoded);
         Assert.assertEquals(message, decoded);
     }
 

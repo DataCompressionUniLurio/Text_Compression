@@ -37,7 +37,7 @@ public class RLE implements compressable {
         this.outEncoding = "";
     }
 
-    private String encode() {
+    public String encode() {
 
         while (index < str.length()) {
 
@@ -160,7 +160,7 @@ public class RLE implements compressable {
         return "n" + lenght + word;
     }
 
-    private String decode() {
+    public String decode() {
 
         int i = 0;
         char controSymbol = readNextSymbol(i);
